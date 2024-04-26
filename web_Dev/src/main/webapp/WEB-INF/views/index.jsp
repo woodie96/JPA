@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!doctype html>
 <html>
 
@@ -12,11 +12,8 @@
     <title>메인 > 로그인</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
-
-    
-
     <!-- Bootstrap core CSS -->
-<link href="\css\main\bootstrap.min.css" rel="stylesheet">
+	<link href="\css\main\bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -56,7 +53,7 @@
 
     <div class="checkbox mb-3">
       <label>
-        <input type="checkbox" value="remember-me"> Remember me
+       <!--  <input type="checkbox" value="remember-me"> Remember me -->
       </label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>

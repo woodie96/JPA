@@ -3,16 +3,6 @@
 <!doctype html>
 <html>
 
-
-
-
-
-
-
-
-
-
-
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +16,7 @@
     
 
     <!-- Bootstrap core CSS -->
-<link href="\resources\css\main\bootstrap.min.css" rel="stylesheet">
+<link href="\css\main\bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -46,13 +36,13 @@
 
     
     <!-- Custom styles for this template -->
-    <link href="\resources\css\main\signin.css" rel="stylesheet">
+    <link href="\css\main\signin.css" rel="stylesheet">
   </head>
   <body class="text-center">
     
 <main class="form-signin">
   <form>
-    <img class="mb-4" src="\resources\images\main\bootstrap-logo.svg" alt="" width="72" height="57">
+    <img class="mb-4" src="\images\main\bootstrap-logo.svg" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <div class="form-floating">

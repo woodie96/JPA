@@ -17,4 +17,35 @@ public class userEntty {
 	private String name = "";
 	@Column(name="reg_dt")
 	private LocalDateTime regDt;
+	
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	
+	public String getPw() {
+		return password;
+	}
+	
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void insertUser(String email, String pw, String name, LocalDateTime regDt) {
+		this.email = email;
+		this.password = pw;
+		this.name = name;
+		this.regDt = regDt;
+	}
+	
+	public LocalDateTime getRegDt() {
+		return regDt;
+	}
+	
+
+	
+	
+	
 }

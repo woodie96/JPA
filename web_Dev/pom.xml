@@ -120,6 +120,12 @@
 			<version>1.2</version>
 		</dependency>
 		
+		<dependency>
+		  <groupId>com.google.code.gson</groupId>
+		  <artifactId>gson</artifactId>
+		  <version>2.8.6</version> <!-- 이 버전은 예시입니다. 최신 버전을 확인하십시오. -->
+		</dependency>
+		
 		
 	</dependencies>
 

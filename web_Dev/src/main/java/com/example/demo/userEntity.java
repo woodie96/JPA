@@ -17,6 +17,7 @@ public class userEntity {
 	private String name = "";
 	@Column(name="reg_dt")
 	private LocalDateTime regDt;
+	private String salt;
 	
 	
 	public String getEmail() {
@@ -28,16 +29,20 @@ public class userEntity {
 		return password;
 	}
 	
+	public String getSalt() {
+		return salt;
+	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public void insertUser(String email, String pw, String name, LocalDateTime regDt) {
+	public void insertUser(String email, String pw, String name, LocalDateTime regDt, String salt) {
 		this.email = email;
 		this.password = pw;
 		this.name = name;
 		this.regDt = regDt;
+		this.salt = salt;
 	}
 	
 	public LocalDateTime getRegDt() {

@@ -11,56 +11,62 @@
     <meta name="generator" content="Hugo 0.84.0">
     <title>메인 > 로그인</title>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-
-    <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/"> -->
-    <!-- Bootstrap core CSS -->
-	<link href="\css\main\bootstrap.min.css" rel="stylesheet">
-
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
         }
-      }
-    </style>
 
-    
-    <!-- Custom styles for this template -->
-    <link href="\css\main\signin.css" rel="stylesheet">
+        body {
+        	margin-top: 15%;
+            /* background-color: #1BBC9B; */
+        }
+
+        div {
+            margin: auto;
+            width: 300px;
+            background-color: #EEEFF1;
+            border-radius: 5px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .in {
+            margin-bottom: 10px;
+        }
+
+        #insert {
+            background-color: #1BBC9B;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+            color: #9B9B9B;
+            font-size: 12px;
+        }
+    </style>
   </head>
-  <body class="text-center">
-		<main class="form-signin">
-		  <form id="infoForm" name="infoForm" method="POST">
-		    <img class="mb-4" src="\images\main\bootstrap-logo.svg" alt="" width="72" height="57">
-		    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-		
-		    <div class="form-floating">
-		      <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
-		      <label for="floatingInput">Email address</label>
-		    </div>
-		    <div class="form-floating">
-		      <input type="password" class="form-control" id="floatingPassword" name="pwd" placeholder="Password">
-		      <label for="floatingPassword">Password</label>
-		    </div>
-		
-		    <div class="checkbox mb-3">
-		      <label>
-		       <!--  <input type="checkbox" value="remember-me"> Remember me -->
-		      </label>
-		    </div>
-		    <button type="button" class="w-100 btn btn-lg btn-primary" id="insert">Sign in</button>
-		    <p class="mt-5 mb-3 text-muted">&copy; 2024</p>
-		  </form>
-		</main>
-  </body>
+  <body>
+    <div>
+        <form name="infoForm" id="infoForm">
+            <input type="text" name="email" placeholder="ex) google@gmil.com" class="in">
+            <input type="password" name="pwd" placeholder="비밀번호" class="in">
+            <input type="button" id="insert" value="로그인"><br>
+        </form>
+        <a href="#none">아직 회원이 아니신가요?</a>
+    </div>
+</body>
 	<script>
 		$(document).ready(function(){
 			$("#insert").click(function(){
@@ -73,9 +79,12 @@
 					data:formData,
 					dataType : "json",
 					success : function(data){
+						console.log(data)
 						if(data.result == "N") {
 							alert("입력하신 아이디 또는 패스워드를 확인해주세요.");
 							return false;
+						} else {
+							location.href ="/board.do";
 						}
 					}, error : function(data){
 						alert("입력하신 아이디 또는 패스워드를 확인해주세요.");

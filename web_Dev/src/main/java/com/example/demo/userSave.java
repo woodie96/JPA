@@ -39,7 +39,7 @@ public class userSave {
 	
 		try {
 			userEntity user = new userEntity();
-			user.insertUser("erohwa@gmail.com", "961206k!@", "김재우", LocalDateTime.now());
+			user.insertUser("erohwa@gmail.com", "961206k!@", "김재우", LocalDateTime.now(),"adasdassdada");
 			System.out.println("###################################테스트진행중");
 			em.persist(user);
 			tx.commit();

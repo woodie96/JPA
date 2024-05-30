@@ -37,6 +37,32 @@ public class userEntity {
 		return name;
 	}
 	
+	public LocalDateTime getRegDt() {
+		return regDt;
+	}
+	
+	public void setEmail(String email) {
+		this.email=email;
+	}
+	
+	
+	public void setPw(String password) {
+		this.password=password;
+	}
+	
+	public void setSalt(String salt) {
+		this.salt=salt;
+	}
+	
+	public void setName(String name) {
+		this.name=name;
+	}
+	
+	public void setRegDt(LocalDateTime regDt) {
+		this.regDt=regDt;
+	}
+	
+	
 	public void insertUser(String email, String pw, String name, LocalDateTime regDt, String salt) {
 		this.email = email;
 		this.password = pw;
@@ -45,9 +71,6 @@ public class userEntity {
 		this.salt = salt;
 	}
 	
-	public LocalDateTime getRegDt() {
-		return regDt;
-	}
 	
 	public boolean checkPassword(String password){
 	    return this.password.equals(password);

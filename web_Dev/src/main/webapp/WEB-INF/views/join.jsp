@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>메인 > 로그인</title>
+    <title>메인 > 회원가입</title>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
@@ -51,6 +51,17 @@
             border-radius: 5px;
             border: none;
             background-color: #1e90ff;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        #back {
+                    width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            background-color: #696969;
             margin-bottom: 30px;
             color: white;
         }
@@ -65,11 +76,13 @@
   <body>
     <div>
         <form name="infoForm" id="infoForm">
+            <input type="text" name="name" placeholder="your name" class="in">
             <input type="text" name="email" placeholder="email" class="in">
             <input type="password" name="pwd" placeholder="password" class="in">
-            <button type="button"  id="insert" >로그인</button> <br>
+            <button type="button"  id="insert" >회원가입</button>
+            <button type="button"  id="back" >돌아가기</button> <br>
         </form>
-        <a href="/join.do">아직 회원이 아니신가요?</a>
+        <!-- <a href="#none">아직 회원이 아니신가요?</a> -->
     </div>
 </body>
 	<script>
@@ -79,18 +92,12 @@
 				var formData = $("#infoForm").serialize();
 				
 				$.ajax({
-					url : "/login.do",
+					url : "/insertUser.do",
 					type: "POST",
 					data:formData,
 					dataType : "json",
 					success : function(data){
-						console.log(data)
-						if(data.result == "N") {
-							alert("입력하신 아이디 또는 패스워드를 확인해주세요.");
-							return false;
-						} else {
-							location.href ="/board.do";
-						}
+						console.log(data);
 					}, error : function(data){
 						alert("입력하신 아이디 또는 패스워드를 확인해주세요.");
 						return false;

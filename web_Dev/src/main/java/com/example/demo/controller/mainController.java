@@ -1,11 +1,15 @@
 package com.example.demo.controller;
 
+import java.io.Writer;
+import java.net.URLEncoder;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +27,10 @@ import com.example.demo.userService;
 import com.google.gson.Gson;
 
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +38,14 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class mainController {
+	
+	
+  private userRepository userRepository;
+  
+  @Autowired
+  public mainController(userRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 	
 	@Autowired
 	private userService userService;
@@ -42,6 +58,50 @@ public class mainController {
 	@RequestMapping(value = "/board.do")
 	public String board() {
 		return "board";
+	}
+	
+	@RequestMapping(value = "/join.do")
+	public String join() {
+		return "join";
+	}
+	
+	@RequestMapping(value = "/insertUser.do" , method = RequestMethod.POST)
+	@ResponseBody
+	public void saveUser(HttpServletResponse response, HttpServletRequest request, @RequestParam HashMap<String, Object> userMap) {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+        Gson gson = new Gson();
+        HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		
+		try {
+			
+			userEntity user = new userEntity();
+			
+			String email = Objects.toString(userMap.get("email"), "");
+			String pwd = commonUtil.sha256Encode(Objects.toString(userMap.get("pwd"), ""));
+			String name = Objects.toString(userMap.get("name"), "");
+			String salt = commonUtil.salt();
+			
+			
+			if(!userRepository.findById(email).isEmpty()) {
+			    resultMap.put("result", "N");
+			}
+			
+			
+			
+			user.insertUser(email, (pwd+salt), name, LocalDateTime.now(), salt);
+			System.out.println("###################################테스트진행중");
+			
+			userRepository.save(user);
+			
+			String json = gson.toJson(resultMap);
+		    response.getWriter().write(json); // JSON 데이터 응답
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("에러");
+		}
 	}
 	
 	@RequestMapping(value="/login.do", method = RequestMethod.POST)

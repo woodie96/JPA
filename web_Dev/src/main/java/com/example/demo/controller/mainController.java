@@ -72,7 +72,7 @@ public class mainController {
 		response.setCharacterEncoding("UTF-8");
         Gson gson = new Gson();
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		
+        String json = "";
 		
 		try {
 			
@@ -86,21 +86,24 @@ public class mainController {
 			
 			if(!userRepository.findById(email).isEmpty()) {
 			    resultMap.put("result", "N");
+			} else {
+				user.insertUser(email, (pwd+salt), name, LocalDateTime.now(), salt);
+				userRepository.save(user);
+				resultMap.put("result", "Y");
 			}
 			
 			
-			
-			user.insertUser(email, (pwd+salt), name, LocalDateTime.now(), salt);
-			System.out.println("###################################테스트진행중");
-			
-			userRepository.save(user);
-			
-			String json = gson.toJson(resultMap);
-		    response.getWriter().write(json); // JSON 데이터 응답
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("result", "A");
+		}
+		
+		try {
+			json = gson.toJson(resultMap);
+			response.getWriter().write(json); // JSON 데이터 응답
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("에러");
 		}
 	}
 	

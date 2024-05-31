@@ -97,12 +97,25 @@
 					data:formData,
 					dataType : "json",
 					success : function(data){
-						console.log(data);
+						if(data.result == 'N') {
+							alert("이미 존재하는 아이디 입니다.");
+							return false;
+						} else if(data.result == 'A') {
+							alert("오류가 발생했습니다. \n관리자에게 문의해주세요.");
+							return false;
+						} else {
+							alert("회원가입에 성공 했습니다. \n로그인페이지로 이동합니다.");
+							location.href = "/";
+						}
 					}, error : function(data){
 						alert("입력하신 아이디 또는 패스워드를 확인해주세요.");
 						return false;
 					}
 				});	
+			});
+			
+			$("#back").click(function(){
+				location.href = '/';
 			});
 		});
 	</script>

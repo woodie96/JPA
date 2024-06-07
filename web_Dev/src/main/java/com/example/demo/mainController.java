@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -36,12 +37,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
-@RestController
+@Controller
 public class mainController {
 	
 
-//  @Autowired
-//  private BoardService boardService;
+  @Autowired
+  private BoardService boardService;
 	
   private userRepository userRepository;
   
@@ -65,10 +66,10 @@ public class mainController {
 	}
 	
 	@RequestMapping(value = "/board.do")
-	public String board(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Pageable pageable) {
-		
-//		Page<boardEntity> postPage = boardService.getAllBoards(pageable);
-//        model.addAttribute("postPage", postPage);
+	public String board(Model model, Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size) {
+
+		Slice<boardEntity> boards = boardService.getBoards(page, size, "num");
+        model.addAttribute("boards", boards);
 		
 		return "board";
 	}

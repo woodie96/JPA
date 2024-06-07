@@ -9,6 +9,5 @@ import org.springframework.stereotype.Service;
 
 @Repository
 public interface BoardRepository extends JpaRepository<boardEntity, Integer> {
-//	//페이징
-//	Page<boardEntity> findAll(Pageable pageable);
+
 }

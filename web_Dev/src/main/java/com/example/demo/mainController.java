@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo;
 
 import java.io.Writer;
 import java.net.URLEncoder;
@@ -12,18 +12,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.commonUtil;
-import com.example.demo.userEntity;
-import com.example.demo.userRepository;
-import com.example.demo.userService;
 import com.google.gson.Gson;
 
 import jakarta.annotation.Resource;
@@ -36,9 +36,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
-@Controller
+@RestController
 public class mainController {
 	
+
+//  @Autowired
+//  private BoardService boardService;
 	
   private userRepository userRepository;
   
@@ -46,17 +49,27 @@ public class mainController {
   public mainController(userRepository userRepository) {
     this.userRepository = userRepository;
   }
-	
-	@Autowired
-	private userService userService;
 
-	@RequestMapping(value = "/main.do , /")
-	public String main() {
+
+	@RequestMapping(value = "/main.do")
+	public String main(HttpServletResponse response, HttpServletRequest request) {
+		
+    	HttpSession session = request.getSession();
+    	Map userInfo = (Map)session.getAttribute(session.getId()+"_loginSession");
+    	if(userInfo != null) {
+    		return "redirect:/board.do";
+    	}
+		
+		
 		return "index";
 	}
 	
 	@RequestMapping(value = "/board.do")
-	public String board() {
+	public String board(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Pageable pageable) {
+		
+//		Page<boardEntity> postPage = boardService.getAllBoards(pageable);
+//        model.addAttribute("postPage", postPage);
+		
 		return "board";
 	}
 	
@@ -121,7 +134,7 @@ public class mainController {
 			
 			if(null != Objects.toString(map.get("email"), null) && !"".equals(Objects.toString(map.get("email"), ""))) {
 				userEmail = Objects.toString(map.get("email"), "");
-				userEntity user = userService.findUserById(userEmail);
+				userEntity user = userRepository.getById(userEmail);
 				if(user == null) {
 					resultMap.put("result", "N");
 				} else {
@@ -140,7 +153,7 @@ public class mainController {
 					HashMap loginMap = new HashMap();
 					loginMap.put("userEmail", user.getEmail());
 					loginMap.put("userName", user.getName());
-					session.setAttribute(user.getEmail()+"_loginSession", loginMap);
+					session.setAttribute(session.getId()+"_loginSession", loginMap);
 					session.setMaxInactiveInterval(1800); // 30분
 				}
 				

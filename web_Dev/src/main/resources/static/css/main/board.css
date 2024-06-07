@@ -132,6 +132,12 @@ section.notice {
   color: #fff;
 }
 
+.btn-blue {
+  background: #22499d;
+  color: #fff;
+}
+
+
 .btn-dark:hover, .btn-dark:focus {
   background: #373737;
   border-color: #373737;

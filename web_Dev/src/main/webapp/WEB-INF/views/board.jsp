@@ -41,19 +41,16 @@
 	  <section class="notice">
 	  <div class="page-title">
 	        <div class="container">
-	            <h3>공지사항</h3>
-	        </div>
-	    </div>
-	
-	    <!-- board seach area -->
+	            <h3 style="margin-bottom: 25px;">자유게시판</h3>
+	            	    <!-- board seach area -->
 	    <div id="board-search">
 	        <div class="container">
 	            <div class="search-window">
 	                <form action="">
 	                    <div class="search-wrap">
-	                        <label for="search" class="blind">공지사항 내용 검색</label>
+	                        <label for="search" class="blind">자유게시파 내용 검색</label>
 	                        <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
-	                        <button type="submit" class="btn btn-dark">검색</button>
+	                        <button type="button" class="btn btn-dark">검색</button>
 	                    </div>
 	                </form>
 	            </div>
@@ -96,14 +93,23 @@
 	            </table>
 	        </div>
 	    </div>
-
+	    <div style="margin-top: 20px; text-align: right;">
+			<button type="button" class="btn btn-blue insert" style="padding-top: 5px; padding-bottom: 5px;">글작성</button>
+	    
+	    </div>
+	            
+	        </div>
+	    </div>
+	    
 </section>
   
   
   </body>
 	<script>
 		$(document).ready(function(){
-
+			$(".insert").click(function(){
+				location.href = '/insertBoardPage.do';
+			});
 		});
 	</script>
 </html>

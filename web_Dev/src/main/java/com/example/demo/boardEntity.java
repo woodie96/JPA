@@ -28,27 +28,27 @@ public class boardEntity {
 	
 	
 	
-	public Integer num() {
+	public Integer getNum() {
 		return num;
 	}
 	
-	public String title() {
+	public String getTitle() {
 		return title;
 	}
 	
-	public String content() {
+	public String getContent() {
 		return content;
 	}
 	
-	public String regId() {
+	public String getRegId() {
 		return regId;
 	}
 	
-	public String regNm() {
+	public String getRegNm() {
 		return regNm;
 	}
 	
-	public LocalDateTime regDt() {
+	public LocalDateTime getRegDt() {
 		return regDt;
 	}
 	

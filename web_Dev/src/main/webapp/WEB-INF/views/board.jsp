@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html>
 
@@ -16,21 +17,6 @@
     <!-- Bootstrap core CSS -->
 	<!-- <link href="\css\main\bootstrap.min.css" rel="stylesheet"> -->
 
-<!--     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style> -->
 
     
     <!-- Custom styles for this template -->
@@ -65,40 +51,50 @@
 	                <tr>
 	                    <th scope="col" class="th-num">번호</th>
 	                    <th scope="col" class="th-title">제목</th>
+	                    <th scope="col" class="th-name">작성자</th>
 	                    <th scope="col" class="th-date">등록일</th>
 	                </tr>
 	                </thead>
 	                <tbody>
-	                <tr>
-	                    <td>3</td>
-	                    <th>
-	                      <a href="#!">[공지사항] 개인정보 처리방침 변경안내처리방침</a>
-	                      <p>테스트</p>
-	                    </th>
-	                    <td>2017.07.13</td>
-	                </tr>
-	
-	                <tr>
-	                    <td>2</td>
-	                    <th><a href="#!">공지사항 안내입니다. 이용해주셔서 감사합니다</a></th>
-	                    <td>2017.06.15</td>
-	                </tr>
-	
-	                <tr>
-	                    <td>1</td>
-	                    <th><a href="#!">공지사항 안내입니다. 이용해주셔서 감사합니다</a></th>
-	                    <td>2017.06.15</td>
-	                </tr>
+	                
+	                <c:if test="${!empty boardList}">
+		                <c:forEach items="${boardList.content}" var="board">
+			                <tr>
+			                    <td><c:out value="${board.num}" escapeXml="false"/></td>
+			                    <th><a href="/boardView.do?num=${board.num}"><c:out value="${board.title}" escapeXml="false" /> </a></th>
+			                    <td><c:out value="${board.regNm}" escapeXml="false"/></td>
+			                    <td>
+			                    	<fmt:parseDate var="parDt" value="${board.regDt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+			                    	<fmt:formatDate var="fmtDt" value="${parDt}" pattern="yyyy-MM-dd HH:mm" />
+			                    	<c:out value="${fmtDt}" escapeXml="false"/>
+			                    </td>
+			                </tr>	                
+		                </c:forEach>
+	                </c:if>
 	                </tbody>
 	            </table>
 	        </div>
 	    </div>
 	    <div style="margin-top: 20px; text-align: right;">
 			<button type="button" class="btn btn-blue insert" style="padding-top: 5px; padding-bottom: 5px;">글작성</button>
-	    
 	    </div>
 	            
 	        </div>
+		    <div style="text-align: center;">
+		    	<ul class="paging">
+				    <c:if test="${hasPrevious}">
+				        <li><a href="/board.do?page=0">처음</a></li>
+				        <li><a href="/board.do?page=${nowPage-1}">이전</a></li>
+				    </c:if>
+				    <c:forEach var="cPage" begin="0" end="${totalPages-1}" varStatus="status">
+					    <li><a href="/board.do?page=${status.index}">${status.index+1}</a></li>
+				    </c:forEach>
+				    <c:if test="${hasNext}">
+				        <li><a href="/board.do?page=${nowPage+1}">다음</a></li>
+				        <li><a href="/board.do?page=${totalPages-1}">마지막</a></li>
+				    </c:if>
+				</ul>
+		    </div>
 	    </div>
 	    
 </section>
@@ -107,6 +103,9 @@
   </body>
 	<script>
 		$(document).ready(function(){
+			
+			$(".paging > li").attr("style","display: inline-block;");
+			
 			$(".insert").click(function(){
 				location.href = '/insertBoardPage.do';
 			});

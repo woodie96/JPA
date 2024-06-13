@@ -6,6 +6,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -13,12 +14,18 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +50,8 @@ public class mainController {
 
   @Autowired
   private BoardService boardService;
+  @Autowired
+  private BoardRepository boardRepository;
 	
   private userRepository userRepository;
   
@@ -61,17 +70,7 @@ public class mainController {
     		return "redirect:/board.do";
     	}
 		
-		
 		return "index";
-	}
-	
-	@RequestMapping(value = "/board.do")
-	public String board(Model model, Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size) {
-
-		Slice<boardEntity> boards = boardService.getBoards(page, size, "num");
-        model.addAttribute("boards", boards);
-		
-		return "board";
 	}
 	
 	@RequestMapping(value = "/join.do")

@@ -125,7 +125,7 @@
 			});
 			
 			$("#back").click(function(){
-				location.href = '/';
+				location.href = '/board.do';
 			});
 		});
 	</script>

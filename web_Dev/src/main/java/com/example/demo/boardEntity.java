@@ -52,7 +52,7 @@ public class boardEntity {
 		return regDt;
 	}
 	
-	public void setNum(String name) {
+	public void setNum(Integer num) {
 		this.num=num;
 	}
 	
@@ -80,6 +80,11 @@ public class boardEntity {
 		this.regId = regId;
 		this.regNm = regNm;
 		this.regDt = regDt;
+	}
+	
+	public void updateBoard(String title, String content) {
+		this.title = title;
+		this.content = content;
 	}
 	
 

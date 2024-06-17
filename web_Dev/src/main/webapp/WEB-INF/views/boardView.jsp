@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html>
 
@@ -64,6 +65,16 @@
             margin-bottom: 10px;
             color: white;
         }
+        #delete {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            background-color: #d9534f;
+            margin-bottom: 10px;
+            color: white;
+        }
         
         #back {
                     width: 100%;
@@ -86,10 +97,14 @@
   <body>
     <div>
         <form name="boardForm" id="boardForm">
-            <input type="text" name="title" placeholder="제목을 입력해주세요" class="in">
-            <textarea  name=content class="in" placeholder="내용을 입력해주세요"></textarea>
-            <button type="button"  id="insert" >등록하기</button>
-            <button type="button"  id="back" >돌아가기</button> <br>
+        	<input type="hidden" name="num"  value="${board.num}"/>
+            <input type="text" name="title" placeholder="제목을 입력해주세요" class="in" value="${board.title}" <c:if test="${boardAuth ne 'Y'}">disabled="disabled"</c:if>/>
+            <textarea  name=content class="in" placeholder="내용을 입력해주세요" <c:if test="${boardAuth ne 'Y'}">disabled="disabled"</c:if>><c:out value="${board.content}" escapeXml="false"/></textarea>
+            <c:if test="${boardAuth eq 'Y'}">
+	            <button type="button"  id="insert" >수정</button>    
+	            <button type="button"  id="delete" >삭제</button>          
+            </c:if>
+            <button type="button"  id="back" >목록</button> <br>
         </form>
         <!-- <a href="#none">아직 회원이 아니신가요?</a> -->
     </div>
@@ -101,13 +116,13 @@
 				var formData = $("#boardForm").serialize();
 				
 				$.ajax({
-					url : "/insertBoard.do",
+					url : "/updateBoard.do",
 					type: "POST",
 					data:formData,
 					dataType : "json",
 					success : function(data){
 						if(data.result == 'Y') {
-							alert("글 작성이 완료되었습니다.");
+							alert("글 수정이 완료되었습니다.");
 							location.href = '/board.do';
 						} else if(data.result == 'NL') {
 							alert("로그인 후 다시 시도해주세요.");
@@ -125,7 +140,7 @@
 			});
 			
 			$("#back").click(function(){
-				location.href = '/';
+				location.href = '/board.do';
 			});
 		});
 	</script>

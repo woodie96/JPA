@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -103,9 +104,67 @@ public class BoardManageController {
 	}
 	
 	@RequestMapping(value = "/boardView.do")
-	public String board(Model model) {
+	public String board(HttpServletResponse response, HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) {
+		int key = Integer.parseInt(Objects.toString(map.get("num"), "0"));
+		
+		Optional<boardEntity> board = boardRepository.findById(key);
+		
+		HttpSession session = request.getSession();
+		Map userInfo = commonUtil.getUserSession(request);
+		
+		if(board.isEmpty()) {
+			return "redirect : /board.do";
+		} else {
+			if(userInfo != null) {
+				if (board.get().getRegId().equals(userInfo.get("userEmail"))) {
+					model.addAttribute("boardAuth", "Y");
+				}				
+			}
+		}
+		
+		model.addAttribute("board", board.get());
 		
 		return "boardView";
 	}
+	
+	
+	@RequestMapping(value = "/updateBoard.do")
+	@ResponseBody
+	public void updateBoard(HttpServletResponse response, HttpServletRequest request, @RequestParam HashMap<String, Object> boardMap) {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+        Gson gson = new Gson();
+        HashMap<String, Object> resultMap = new HashMap<String, Object>();
+        String json = "";
+        
+        try {
+        	HttpSession session = request.getSession();
+        	Map userInfo = (Map)session.getAttribute(session.getId()+"_loginSession");
+        	
+        	if(userInfo == null) {
+        		resultMap.put("result", "NL");
+        	} else {
+        		int num = Integer.parseInt(Objects.toString(boardMap.get("num"), "0"));
+        		boardEntity entity = boardRepository.findById(num).orElseThrow();
+        		if(entity == null) {
+        			resultMap.put("result", "N");
+        		} else {
+        			if(entity.getNum() > 0) {
+        				entity.updateBoard(Objects.toString(boardMap.get("title"), ""), Objects.toString(boardMap.get("content"), ""));
+        				boardRepository.save(entity);
+        				resultMap.put("result", "Y");
+        			}
+        		}
+        		
+        	}
+        	
+        	json = gson.toJson(resultMap);
+			response.getWriter().write(json); // JSON 데이터 응답
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

@@ -64,8 +64,8 @@ public class mainController {
 	@RequestMapping(value = "/main.do")
 	public String main(HttpServletResponse response, HttpServletRequest request) {
 		
-    	HttpSession session = request.getSession();
-    	Map userInfo = (Map)session.getAttribute(session.getId()+"_loginSession");
+		HttpSession session = request.getSession();
+		Map userInfo = commonUtil.getUserSession(request);
     	if(userInfo != null) {
     		return "redirect:/board.do";
     	}

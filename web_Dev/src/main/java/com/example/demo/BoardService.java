@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,13 +19,6 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
-
-    public List<boardEntity> getBoards(int page, int size, String pkey) {
-    	
-    	Pageable pageable = PageRequest.of(page, size, Sort.by(pkey).descending());
-    	
-        return boardRepository.findAll(pageable).getContent();
-    }
     
     public Page<boardEntity> getBoardList(int page, int size, String pkey) {
     	
@@ -32,5 +27,8 @@ public class BoardService {
         return boardRepository.findAll(pageable);
 
     }
-	
+    
+    public Optional<boardEntity> getBoardById(int num) {
+        return boardRepository.findById(num);
+    }
 }

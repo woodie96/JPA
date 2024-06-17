@@ -25,6 +25,9 @@
   </head>
   <body class="text-center">
 	  <section class="notice">
+	  <div style="margin-bottom: 50px;">
+	  	<p style="text-align: right;">님 환영합니다.</p>
+	  </div>
 	  <div class="page-title">
 	        <div class="container">
 	            <h3 style="margin-bottom: 25px;">자유게시판</h3>

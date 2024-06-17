@@ -166,5 +166,27 @@ public class BoardManageController {
 		}
 	}
 	
+	@RequestMapping(value = "/deleteBoard.do")
+	public String deleteBoard(HttpServletResponse response, HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) {
+		int num = Integer.parseInt(Objects.toString(map.get("num"), "0"));
+		
+		boardEntity entity = boardRepository.findById(num).orElseThrow();
+		
+		HttpSession session = request.getSession();
+		Map userInfo = commonUtil.getUserSession(request);
+		
+		if(null == entity) {
+			return "redirect : /board.do";
+		} else {
+			if(userInfo != null) {
+				if (entity.getRegId().equals(userInfo.get("userEmail"))) {
+					boardRepository.delete(entity);
+				}				
+			}
+		}
+		
+		return "redirect:/board.do";
+	}
+	
 	
 }

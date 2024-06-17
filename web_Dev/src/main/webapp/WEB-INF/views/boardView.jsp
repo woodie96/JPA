@@ -96,7 +96,7 @@
   </head>
   <body>
     <div>
-        <form name="boardForm" id="boardForm">
+        <form name="boardForm" id="boardForm" method="post">
         	<input type="hidden" name="num"  value="${board.num}"/>
             <input type="text" name="title" placeholder="제목을 입력해주세요" class="in" value="${board.title}" <c:if test="${boardAuth ne 'Y'}">disabled="disabled"</c:if>/>
             <textarea  name=content class="in" placeholder="내용을 입력해주세요" <c:if test="${boardAuth ne 'Y'}">disabled="disabled"</c:if>><c:out value="${board.content}" escapeXml="false"/></textarea>
@@ -141,6 +141,10 @@
 			
 			$("#back").click(function(){
 				location.href = '/board.do';
+			});
+			
+			$("#delete").click(function(){
+				$("#boardForm").attr("action","/deleteBoard.do").submit();
 			});
 		});
 	</script>

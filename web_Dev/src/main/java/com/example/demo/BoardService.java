@@ -33,10 +33,10 @@ public class BoardService {
         return boardRepository.findById(num);
     }
     
-    public Page<boardEntity> search(String keyword) {
+    public Page<boardEntity> search(String title, String content) {
     	//검색시 기본 0페이지부터 시작하도록 설정
     	Pageable pageable = PageRequest.of(0, 10, Sort.by("num").descending());
-    	Page<boardEntity> boardList = boardRepository.findByTitleContainingOrContentContaining(keyword, pageable);
+    	Page<boardEntity> boardList = boardRepository.findByTitleContainingOrContentContaining(title, content, pageable);
     	return boardList;
     }
 }

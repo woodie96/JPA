@@ -86,7 +86,7 @@ public class BoardManageController {
 	
 	
 	@RequestMapping(value = "/board.do") //Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size
-	public String board(HttpServletRequest request, Model model,Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size, @RequestParam HashMap<String, Object> map) {
+	public String board(HttpServletRequest request, Model model,Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size, @RequestParam("searchValue") String keyWord, @RequestParam("searchValue") String content ) {
 
 		//List<boardEntity> boards = boardService.getBoards(page, size, "num");
 		//model.addAttribute("boards", boards);
@@ -95,10 +95,10 @@ public class BoardManageController {
 		userInfo.put("time", session.getMaxInactiveInterval());
 		model.addAttribute("userInfo", userInfo);
 		Page<boardEntity> boardList;
-		if(Objects.toString(map.get("searchValue"), "").equals("")) {			
+		if(Objects.toString(keyWord, "").equals("")) {			
 			boardList = boardService.getBoardList(page, size, "num");
 		} else {
-			boardList = boardService.search(Objects.toString(map.get("searchValue"), ""));
+			boardList = boardService.search(keyWord, content);
 		}
 		
 		model.addAttribute("boardList", boardList);

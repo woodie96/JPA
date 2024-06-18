@@ -11,6 +11,6 @@ import org.springframework.stereotype.Service;
 @Repository
 public interface BoardRepository extends JpaRepository<boardEntity, Integer>, JpaSpecificationExecutor<boardEntity> {
 	
-	Page<boardEntity> findByTitleContainingOrContentContaining(String keyword, Pageable pageable);
+	Page<boardEntity> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
 
 }

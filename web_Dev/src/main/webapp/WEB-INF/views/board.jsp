@@ -26,7 +26,7 @@
   <body class="text-center">
 	  <section class="notice">
 	  <div style="margin-bottom: 50px;">
-	  	<p style="text-align: right;">님 환영합니다.</p>
+	  	<p style="text-align: right;">${userInfo.userName}님 환영합니다. <br> <span id="timer">${userInfo.time}</span></p>
 	  </div>
 	  <div class="page-title">
 	        <div class="container">
@@ -35,11 +35,11 @@
 	    <div id="board-search">
 	        <div class="container">
 	            <div class="search-window">
-	                <form action="">
+	                <form id="searchForm" method="post">
 	                    <div class="search-wrap">
 	                        <label for="search" class="blind">자유게시파 내용 검색</label>
-	                        <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
-	                        <button type="button" class="btn btn-dark">검색</button>
+	                        <input id="searchValue" type="search" name="searchValue" placeholder="검색어를 입력해주세요." value="">
+	                        <button type="button" class="btn btn-dark" id="goSearch">검색</button>
 	                    </div>
 	                </form>
 	            </div>
@@ -112,7 +112,63 @@
 			$(".insert").click(function(){
 				location.href = '/insertBoardPage.do';
 			});
+			
+			$("#goSearch").click(function() {
+				if($.trim($("#searchValue").val()) == "") {
+					alert("검색어를 입력해주세요.");
+					return false;
+				} else {
+					$("#searchForm").attr("action","/board.do").submit();					
+				}
+			});
 		});
+		
+		var timer;
+		$(document).ready(function(){
+		    
+		    doTimer(1800);
+		    $(document).on('click', "i[id='sessionRefresh']", function(){
+		        clearTimeout(timer);
+		        doTimer(1800);
+		    });
+		});
+		 
+		function sessionTimeOut() {
+		      return new Promise(function(resolve, reject) {
+		        $.get('/sessionTimeOutLogOut.do', function(response) {
+		          if (response) {
+		              console.log("time2");
+		            resolve(response);
+		          }
+		          reject(new Error("Request is failed"));
+		        });
+		      });
+		    }
+		 
+		function doTimer(time){
+		    var date = new Date(null);
+		    if(time){
+		        date.setSeconds(time);
+		        document.getElementById("timer").innerHTML = date.toISOString().substr(11,8);
+		        if(time == 0){
+		            sessionTimeOut().then(function(data){
+		                clearTimeout(timer);
+		                alertMessage(messageType.type.E, "세션이 만료되었습니다.",
+		                        "다시 로그인해주세요", function(){location.href = "/logoutProcess.do";}  )
+		                return;
+		            }).catch(function(err){
+		                console.error(err);
+		            });
+		 
+		            return;
+		            
+		        }
+		 
+		        --time;
+		        timer = setTimeout(doTimer, 1000, time);
+		    }
+		    return;
+		}
 	</script>
 </html>
 

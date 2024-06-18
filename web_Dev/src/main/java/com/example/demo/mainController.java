@@ -168,4 +168,17 @@ public class mainController {
 	}
 	
 	
+	@RequestMapping(value = "/logoutProcess.do")
+	public String logoutProcess(HttpServletResponse response, HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		Map userInfo = commonUtil.getUserSession(request);
+    	if(userInfo != null) {
+    		session.invalidate();
+    	}
+		
+    	return "redirect:/";
+	}
+	
+	
 }

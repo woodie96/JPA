@@ -86,11 +86,21 @@ public class BoardManageController {
 	
 	
 	@RequestMapping(value = "/board.do") //Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size
-	public String board(Model model,Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size) {
+	public String board(HttpServletRequest request, Model model,Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size, @RequestParam HashMap<String, Object> map) {
 
 		//List<boardEntity> boards = boardService.getBoards(page, size, "num");
 		//model.addAttribute("boards", boards);
-		Page<boardEntity> boardList = boardService.getBoardList(page, size, "num");
+		HttpSession session = request.getSession();
+		Map userInfo = commonUtil.getUserSession(request);
+		userInfo.put("time", session.getMaxInactiveInterval());
+		model.addAttribute("userInfo", userInfo);
+		Page<boardEntity> boardList;
+		if(Objects.toString(map.get("searchValue"), "").equals("")) {			
+			boardList = boardService.getBoardList(page, size, "num");
+		} else {
+			boardList = boardService.search(Objects.toString(map.get("searchValue"), ""));
+		}
+		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalPages", boardList.getTotalPages());
 		model.addAttribute("currentPage", boardList.getNumber());
@@ -187,6 +197,5 @@ public class BoardManageController {
 		
 		return "redirect:/board.do";
 	}
-	
 	
 }

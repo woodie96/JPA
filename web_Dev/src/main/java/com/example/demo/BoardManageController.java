@@ -25,21 +25,18 @@ import jakarta.servlet.http.HttpSession;
 public class BoardManageController {
 	private BoardRepository boardRepository;
 	  
-	 @Autowired 
-	 public BoardManageController(BoardRepository boardRepository) {
-		 this.boardRepository = boardRepository; 
-	 }
+	@Autowired 
+	public BoardManageController(BoardRepository boardRepository) {
+		this.boardRepository = boardRepository; 
+	}
 	 
-
-	  @Autowired
-	  private BoardService boardService;
+	@Autowired
+	private BoardService boardService;
 	 
 	@RequestMapping(value = "/insertBoardPage.do")
 	public String insertBoardPage() {
 		return "insertBoard";
 	}
-	
-	
 	
 	@RequestMapping(value = "/insertBoard.do")
 	@ResponseBody
@@ -75,7 +72,6 @@ public class BoardManageController {
         		}
         		
         	}
-        	
         	json = gson.toJson(resultMap);
 			response.getWriter().write(json); // JSON 데이터 응답
 			

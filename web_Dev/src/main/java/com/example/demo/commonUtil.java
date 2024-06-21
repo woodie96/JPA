@@ -21,25 +21,21 @@ import jakarta.servlet.http.HttpSession;
 public class commonUtil {
 	
 	private static final SecureRandom random = new SecureRandom();
-	
+
 	public static String sha256Encode(String text) {
 		return Hashing.sha256()
 			  .hashString(text, StandardCharsets.UTF_8).toString();
 	}
-	
 	public static String salt() {
 		byte[] salt = new byte[16];
 		random.nextBytes(salt);
 		return Base64.getEncoder().encodeToString(salt);
 	}
-	
 	public static Map<String, Object> getUserSession(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Map<String, Object> map = (Map)session.getAttribute(session.getId()+"_loginSession");
 		return map;
-		
 	}
-	
 	public static String alertException(HttpServletResponse response, String message, String url) {
 		response.setContentType("text/html; charset=UTF-8");
 		response.setCharacterEncoding("utf-8");
@@ -63,17 +59,7 @@ public class commonUtil {
 		} finally {
 			pwOut.flush();
 		}
-
 		return null;
-
 	}
 	
-	
-//	public static String alertException(Model model, String message, String url) {
-//		model.addAttribute("msg", message);
-//		model.addAttribute("url", url);
-//		return "alert";
-//		
-//	}
-
 }

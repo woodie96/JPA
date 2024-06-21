@@ -38,7 +38,7 @@
 	                <form id="searchForm" method="post">
 	                    <div class="search-wrap">
 	                        <label for="search" class="blind">자유게시파 내용 검색</label>
-	                        <input id="searchValue" type="search" name="searchValue" placeholder="검색어를 입력해주세요." value="">
+	                        <input id="searchValue" type="search" name="searchValue" placeholder="검색어를 입력해주세요." value="${map.searchValue}">
 	                        <button type="button" class="btn btn-dark" id="goSearch">검색</button>
 	                    </div>
 	                </form>
@@ -61,9 +61,9 @@
 	                <tbody>
 	                
 	                <c:if test="${!empty boardList}">
-		                <c:forEach items="${boardList.content}" var="board">
+		                <c:forEach items="${boardList.content}" var="board" varStatus="status">
 			                <tr>
-			                    <td><c:out value="${board.num}" escapeXml="false"/></td>
+			                    <td><c:out value="${board.rowNum}" escapeXml="false"/></td>
 			                    <th><a href="/boardView.do?num=${board.num}"><c:out value="${board.title}" escapeXml="false" /> </a></th>
 			                    <td><c:out value="${board.regNm}" escapeXml="false"/></td>
 			                    <td>
@@ -114,12 +114,7 @@
 			});
 			
 			$("#goSearch").click(function() {
-				if($.trim($("#searchValue").val()) == "") {
-					alert("검색어를 입력해주세요.");
-					return false;
-				} else {
-					$("#searchForm").attr("action","/board.do").submit();					
-				}
+				$("#searchForm").attr("action","/board.do").submit();
 			});
 		});
 		

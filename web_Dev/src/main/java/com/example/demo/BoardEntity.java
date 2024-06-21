@@ -9,10 +9,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.Getter;
 
-@Entity //DB 테이블과 매핑 대상이라고 알리는 역할
+@Entity(name = "Board") //DB 테이블과 매핑 대상이라고 알리는 역할
 @Table(name="board") // 테이블과 매핑 (클래스 명과 테이블 명이 동일하다면 생략 가능)
-public class boardEntity {
+@Getter
+public class BoardEntity {
 	
 	@Id // 식별자에 대응 > 기본키일때 지정하는 듯 함 *별도의 지정이 없을 땐 컬럼 = 변수명 같은걸 Id로 인식
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +28,14 @@ public class boardEntity {
 	private String regNm = "";
 	@Column(name="reg_dt")
 	private LocalDateTime regDt;
+    @Column(name = "row_num")
+	private Integer rowNum;
 	
-	
-	
+    
+    public Integer getRowNum() {
+		return rowNum;
+	}
+    
 	public Integer getNum() {
 		return num;
 	}
@@ -54,6 +62,9 @@ public class boardEntity {
 	
 	public void setNum(Integer num) {
 		this.num=num;
+	}
+	public Integer setRowNum(Integer rowNum) {
+		return this.rowNum=rowNum;
 	}
 	
 	public void setTitle(String title) {
@@ -87,8 +98,6 @@ public class boardEntity {
 		this.content = content;
 	}
 	
-
-
 	
 	
 	

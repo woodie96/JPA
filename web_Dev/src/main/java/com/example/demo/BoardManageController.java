@@ -57,14 +57,14 @@ public class BoardManageController {
         	if(userInfo == null) {
         		resultMap.put("result", "NL");
         	} else {
-        		boardEntity board = new boardEntity();        	
+        		BoardEntity board = new BoardEntity();        	
         		String title = Objects.toString(userMap.get("title"), "");
         		String content = Objects.toString(userMap.get("content"), "");
         		String userId = Objects.toString(userInfo.get("userEmail"), "");
         		String userNm = Objects.toString(userInfo.get("userName"),  "");
         		
         		board.setBoard(title, content, userId ,userNm, LocalDateTime.now() );
-        		boardEntity be = boardRepository.save(board);
+        		BoardEntity be = boardRepository.save(board);
         		
         		if(be == null) {
         			resultMap.put("result", "N");
@@ -85,20 +85,21 @@ public class BoardManageController {
 	}
 	
 	
-	@RequestMapping(value = "/board.do") //Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size
-	public String board(HttpServletRequest request, Model model,Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size, @RequestParam("searchValue") String keyWord, @RequestParam("searchValue") String content ) {
+	@RequestMapping(value = "/board.do")
+	public String board(HttpServletRequest request, HttpServletResponse response, Model model,Pageable pageable, @RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size, @RequestParam HashMap<String, Object> boardMap ) {
 
-		//List<boardEntity> boards = boardService.getBoards(page, size, "num");
-		//model.addAttribute("boards", boards);
 		HttpSession session = request.getSession();
 		Map userInfo = commonUtil.getUserSession(request);
+		if(userInfo == null) {
+			return commonUtil.alertException(response,"로그인 후 다시 시도해주세요.","/");
+		}
 		userInfo.put("time", session.getMaxInactiveInterval());
 		model.addAttribute("userInfo", userInfo);
-		Page<boardEntity> boardList;
-		if(Objects.toString(keyWord, "").equals("")) {			
-			boardList = boardService.getBoardList(page, size, "num");
+		Page<BoardEntity> boardList;
+		if(Objects.toString(boardMap.get("searchValue"), "").equals("")) {			
+			boardList = boardService.getPostsWithRowNumber(page, size, "num");
 		} else {
-			boardList = boardService.search(keyWord, content);
+			boardList = boardService.search(Objects.toString(boardMap.get("searchValue"), ""));
 		}
 		
 		model.addAttribute("boardList", boardList);
@@ -108,6 +109,7 @@ public class BoardManageController {
 		model.addAttribute("hasNext", boardList.hasNext());
 		model.addAttribute("hasPrevious", boardList.hasPrevious());
 		model.addAttribute("nowPage", page);
+		model.addAttribute("map", boardMap);
 		
 		
 		return "board";
@@ -117,7 +119,7 @@ public class BoardManageController {
 	public String board(HttpServletResponse response, HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) {
 		int key = Integer.parseInt(Objects.toString(map.get("num"), "0"));
 		
-		Optional<boardEntity> board = boardRepository.findById(key);
+		Optional<BoardEntity> board = boardRepository.findById(key);
 		
 		HttpSession session = request.getSession();
 		Map userInfo = commonUtil.getUserSession(request);
@@ -155,7 +157,7 @@ public class BoardManageController {
         		resultMap.put("result", "NL");
         	} else {
         		int num = Integer.parseInt(Objects.toString(boardMap.get("num"), "0"));
-        		boardEntity entity = boardRepository.findById(num).orElseThrow();
+        		BoardEntity entity = boardRepository.findById(num).orElseThrow();
         		if(entity == null) {
         			resultMap.put("result", "N");
         		} else {
@@ -180,7 +182,7 @@ public class BoardManageController {
 	public String deleteBoard(HttpServletResponse response, HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) {
 		int num = Integer.parseInt(Objects.toString(map.get("num"), "0"));
 		
-		boardEntity entity = boardRepository.findById(num).orElseThrow();
+		BoardEntity entity = boardRepository.findById(num).orElseThrow();
 		
 		HttpSession session = request.getSession();
 		Map userInfo = commonUtil.getUserSession(request);
